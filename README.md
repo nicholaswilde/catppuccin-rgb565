@@ -1,19 +1,19 @@
-# Catppuccin RGB565
+# :art: Catppuccin RGB565
 
 [![PlatformIO CI](https://github.com/nicholaswilde/catppuccin-rgb565/actions/workflows/ci.yml/badge.svg)](https://github.com/nicholaswilde/catppuccin-rgb565/actions/workflows/ci.yml)
 
 A PlatformIO / Arduino library providing the full [Catppuccin](https://github.com/catppuccin/catppuccin) color palette — all **4 flavors × 26 colors** — pre-converted to **RGB565** for use with TFT and OLED display drivers (TFT_eSPI, Adafruit GFX, LVGL, etc.).
 
-## Flavors
+## :palette: Flavors
 
 | Flavor | Base | Variant |
 |--------|------|---------|
-| 🌙 Mocha | `#1E1E2E` | Dark |
-| 🪐 Macchiato | `#24273A` | Dark |
-| 🌸 Frappé | `#303446` | Dark |
-| 🌻 Latte | `#EFF1F5` | Light |
+| :crescent_moon: Mocha | `#1E1E2E` | Dark |
+| :ringed_planet: Macchiato | `#24273A` | Dark |
+| :cherry_blossom: Frappé | `#303446` | Dark |
+| :sunflower: Latte | `#EFF1F5` | Light |
 
-## Installation
+## :inbox_tray: Installation
 
 ### PlatformIO (recommended)
 
@@ -28,7 +28,7 @@ lib_deps =
 
 Search for **CatppuccinRGB565** in the Arduino IDE Library Manager.
 
-## Usage
+## :wrench: Usage
 
 ### Static (compile-time) constants
 
@@ -57,13 +57,13 @@ tft.setTextColor(p.text, p.base);
 uint16_t bg = CATP_SWAP(Catppuccin::Mocha::base);
 ```
 
-## All 26 Colors
+## :rainbow: All 26 Colors
 
 Each flavor exposes these members in the `Catppuccin::<Flavor>` namespace:
 
 `rosewater` · `flamingo` · `pink` · `mauve` · `red` · `maroon` · `peach` · `yellow` · `green` · `teal` · `sky` · `sapphire` · `blue` · `lavender` · `text` · `subtext1` · `subtext0` · `overlay2` · `overlay1` · `overlay0` · `surface2` · `surface1` · `surface0` · `base` · `mantle` · `crust`
 
-## RGB565 Conversion
+## :abacus: RGB565 Conversion
 
 All values are converted using the standard formula:
 
@@ -73,7 +73,7 @@ rgb565 = (r & 0xF8) << 8 | (g & 0xFC) << 3 | b >> 3
 
 This matches the convention used by TFT_eSPI, Adafruit GFX, and LVGL.
 
-## Tasks
+## :white_check_mark: Tasks
 
 This project uses [Task](https://taskfile.dev) to simplify common operations.
 
@@ -85,7 +85,7 @@ This project uses [Task](https://taskfile.dev) to simplify common operations.
 | `task flash` | Upload then open monitor in one step |
 | `task test` | Run host-native unit tests |
 
-## Examples
+## :bulb: Examples
 
 ### [`BasicUsage`](examples/BasicUsage/BasicUsage.ino)
 
@@ -97,7 +97,7 @@ text color, and renders an accent color strip across the screen.
 Demonstrates `getPalette()` by cycling through all four flavors every 3
 seconds at runtime — no recompile needed to switch themes.
 
-### [`CydColorPalette`](examples/CydColorPalette/CydColorPalette.ino) ✨
+### [`CydColorPalette`](examples/CydColorPalette/CydColorPalette.ino) :sparkles:
 
 A full palette viewer for the **ESP32-2432S028R** (CYD — Cheap Yellow
 Display). Shows all 26 colors as labeled circles arranged in a two-column
@@ -128,7 +128,7 @@ Or from the project root using Task:
 task upload
 ```
 
-## Tests
+## :test_tube: Tests
 
 45 Unity tests cover color accuracy (verified against the runtime RGB888→RGB565
 formula), runtime palette lookup, byte-swap macro, and structural integrity.
