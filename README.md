@@ -1,10 +1,10 @@
-# :art: Catppuccin RGB565
+# :art: Catppuccin RGB565 :cat:
 
 [![PlatformIO CI](https://github.com/nicholaswilde/catppuccin-rgb565/actions/workflows/ci.yml/badge.svg)](https://github.com/nicholaswilde/catppuccin-rgb565/actions/workflows/ci.yml)
 
 A PlatformIO / Arduino library providing the full [Catppuccin](https://github.com/catppuccin/catppuccin) color palette — all **4 flavors × 26 colors** — pre-converted to **RGB565** for use with TFT and OLED display drivers (TFT_eSPI, Adafruit GFX, LVGL, etc.).
 
-## :palette: Flavors
+## :art: Flavors
 
 | Flavor | Base | Variant |
 |--------|------|---------|
