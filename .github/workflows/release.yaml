@@ -1,0 +1,174 @@
+---
+# Release workflow for catppuccin-rgb565
+#
+# Triggered by pushing a tag matching v* (e.g. v0.1.0).
+# Creates a draft GitHub release containing:
+#   - catppuccin-rgb565-<version>.zip  (PlatformIO / Arduino IDE compatible)
+#
+# PlatformIO registry notes:
+#   - No special packaged files are required; users can install directly from
+#     the git URL or zip. The zip produced here makes offline / zip installs
+#     easy and satisfies the Arduino Library Manager archive format.
+#   - To publish to the PlatformIO registry, run: pio pkg publish
+#     (done manually or via a separate workflow step with a PIO token).
+#
+# Arduino Library Manager notes:
+#   - Library Manager indexes this repo by tag; it does not use the zip.
+#   - The zip structure (library.json / library.properties at root, src/)
+#     matches the Arduino 1.5 library format.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v0.1.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  # ------------------------------------------------------------------
+  # 1. Run native unit tests — release is blocked if any test fails
+  # ------------------------------------------------------------------
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache PlatformIO packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.platformio/packages
+          key: ${{ runner.os }}-pio-${{ hashFiles('**/platformio.ini') }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO
+        run: pip install --upgrade platformio
+
+      - name: Run native tests
+        run: pio test -e native
+
+  # ------------------------------------------------------------------
+  # 2. Package the library as a zip for PlatformIO / Arduino IDE
+  #
+  # Archive layout (Arduino 1.5 / PlatformIO compatible):
+  #   catppuccin-rgb565-v0.1.0/
+  #     library.json
+  #     library.properties
+  #     src/
+  #       CatppuccinRGB565.h
+  #       CatppuccinRGB565.cpp
+  #     examples/
+  #       BasicUsage/BasicUsage.ino
+  #       RuntimeFlavor/RuntimeFlavor.ino
+  #       CydColorPalette/CydColorPalette.ino
+  #       CydColorPalette/platformio.ini
+  #     LICENSE
+  #     README.md
+  # ------------------------------------------------------------------
+  package:
+    name: Package Library
+    runs-on: ubuntu-latest
+    needs: test
+    outputs:
+      zip_name: ${{ steps.vars.outputs.zip_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: vars
+        run: |
+          REF="${{ github.ref_name }}"
+          # Support workflow_dispatch with explicit tag input
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            REF="${{ github.event.inputs.tag }}"
+          fi
+          echo "version=${REF}" >> $GITHUB_OUTPUT
+          echo "zip_name=catppuccin-rgb565-${REF}.zip" >> $GITHUB_OUTPUT
+          echo "dir_name=catppuccin-rgb565-${REF}" >> $GITHUB_OUTPUT
+
+      - name: Create library archive
+        run: |
+          DIR="${{ steps.vars.outputs.dir_name }}"
+          ZIP="${{ steps.vars.outputs.zip_name }}"
+
+          mkdir -p "$DIR/src" "$DIR/examples"
+
+          # Core library files
+          cp library.json library.properties LICENSE README.md "$DIR/"
+          cp src/CatppuccinRGB565.h src/CatppuccinRGB565.cpp "$DIR/src/"
+
+          # Examples
+          cp -r examples/BasicUsage       "$DIR/examples/"
+          cp -r examples/RuntimeFlavor    "$DIR/examples/"
+          cp -r examples/CydColorPalette  "$DIR/examples/"
+
+          zip -r "$ZIP" "$DIR"
+          echo "Created $ZIP"
+          unzip -l "$ZIP"
+
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.vars.outputs.zip_name }}
+          path: ${{ steps.vars.outputs.zip_name }}
+
+  # ------------------------------------------------------------------
+  # 3. Create draft GitHub release and attach the zip
+  # ------------------------------------------------------------------
+  release:
+    name: Draft Release
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: 'catppuccin-rgb565-*'
+          path: dist
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          draft: true
+          prerelease: false
+          generate_release_notes: true
+          files: dist/**/*
+          body: |
+            ## :inbox_tray: Installation
+
+            ### PlatformIO — git URL
+            ```ini
+            lib_deps =
+                https://github.com/nicholaswilde/catppuccin-rgb565.git#${{ github.ref_name }}
+            ```
+
+            ### PlatformIO — zip URL
+            ```ini
+            lib_deps =
+                https://github.com/nicholaswilde/catppuccin-rgb565/releases/download/${{ github.ref_name }}/catppuccin-rgb565-${{ github.ref_name }}.zip
+            ```
+
+            ### Arduino IDE
+            Download the zip below and use **Sketch → Include Library → Add .ZIP Library…**
