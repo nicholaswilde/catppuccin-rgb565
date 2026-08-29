@@ -20,11 +20,11 @@
 // ---------------------------------------------------------------------------
 // Pin definitions (ESP32-2432S028R — resistive touch)
 // ---------------------------------------------------------------------------
-#define TOUCH_CS   33
-#define TOUCH_IRQ  36
-#define TOUCH_MOSI 32
-#define TOUCH_MISO 39
-#define TOUCH_CLK  25
+#define XPT_CS   33
+#define XPT_IRQ  36
+#define XPT_MOSI 32
+#define XPT_MISO 39
+#define XPT_CLK  25
 #define TFT_BL_PIN 21
 
 // ---------------------------------------------------------------------------
@@ -41,7 +41,7 @@ static constexpr int ROWS         = 13;    // NUM_COLORS / 2
 static constexpr int COLS         = 2;
 static constexpr int COL_W        = DISP_W / COLS;  // 160
 static constexpr int ROW_H        = GRID_H / ROWS;  // ~15
-static constexpr int CIRCLE_R     = 7;
+static constexpr int CIRCLE_R     = 5;
 static constexpr int CIRCLE_X_OFF = CIRCLE_R + 4;   // from col left edge
 static constexpr int LABEL_X_OFF  = CIRCLE_R * 2 + 9;
 static constexpr int AUTO_ADVANCE_MS = 8000;
@@ -51,7 +51,7 @@ static constexpr int AUTO_ADVANCE_MS = 8000;
 // ---------------------------------------------------------------------------
 TFT_eSPI tft;
 static SPIClass touchSPI(HSPI);
-static XPT2046_Touchscreen touch(TOUCH_CS, TOUCH_IRQ);
+static XPT2046_Touchscreen touch(XPT_CS, XPT_IRQ);
 
 static uint8_t  currentFlavor   = 0;
 static uint32_t lastTouchMs     = 0;
@@ -201,7 +201,7 @@ void setup() {
     tft.fillScreen(TFT_BLACK);
 
     // Touch (uses HSPI — separate from TFT VSPI)
-    touchSPI.begin(TOUCH_CLK, TOUCH_MISO, TOUCH_MOSI, TOUCH_CS);
+    touchSPI.begin(XPT_CLK, XPT_MISO, XPT_MOSI, XPT_CS);
     touch.begin(touchSPI);
     touch.setRotation(1);
 

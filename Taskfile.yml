@@ -2,8 +2,42 @@
 
 version: '3'
 
+vars:
+  EXAMPLE_DIR: examples/CydColorPalette
+  EXAMPLE_ENV: cyd_28r
+
 tasks:
   default:
     cmds:
       - task -l
     silent: true
+
+  test:
+    desc: Run host-native unit tests
+    cmds:
+      - pio test -e native
+    dir: '{{.ROOT_DIR}}'
+
+  build:
+    desc: Build the CydColorPalette example for ESP32-2432S028R
+    cmds:
+      - pio run -e {{.EXAMPLE_ENV}}
+    dir: '{{.ROOT_DIR}}/{{.EXAMPLE_DIR}}'
+
+  upload:
+    desc: Build and upload CydColorPalette to the connected CYD device
+    cmds:
+      - pio run -e {{.EXAMPLE_ENV}} -t upload
+    dir: '{{.ROOT_DIR}}/{{.EXAMPLE_DIR}}'
+
+  monitor:
+    desc: Open serial monitor for the CYD device
+    cmds:
+      - pio device monitor -e {{.EXAMPLE_ENV}}
+    dir: '{{.ROOT_DIR}}/{{.EXAMPLE_DIR}}'
+
+  flash:
+    desc: Build, upload, and open serial monitor in one step
+    cmds:
+      - task: upload
+      - task: monitor
