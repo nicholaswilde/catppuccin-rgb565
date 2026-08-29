@@ -1,6 +1,6 @@
 # :art: Catppuccin RGB565 :cat:
 
-[![PlatformIO CI](https://github.com/nicholaswilde/catppuccin-rgb565/actions/workflows/ci.yml/badge.svg)](https://github.com/nicholaswilde/catppuccin-rgb565/actions/workflows/ci.yml)
+[![PlatformIO CI](https://img.shields.io/github/actions/workflow/status/nicholaswilde/cyd-weather-station/ci.yaml?label=ci&style=for-the-badge&logo=github-actions)](https://github.com/nicholaswilde/catppuccin-rgb565/actions/workflows/ci.yml)
 
 A PlatformIO / Arduino library providing the full [Catppuccin](https://github.com/catppuccin/catppuccin) color palette — all **4 flavors × 26 colors** — pre-converted to **RGB565** for use with TFT and OLED display drivers (TFT_eSPI, Adafruit GFX, LVGL, etc.).
 
