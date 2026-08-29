@@ -1,0 +1,22 @@
+{
+  "name": "CatppuccinRGB565",
+  "version": "0.1.0",
+  "description": "Catppuccin color palette (all 4 flavors, all 26 colors) pre-converted to RGB565 for use with TFT and OLED display libraries on ESP32 and Arduino.",
+  "keywords": "catppuccin,rgb565,tft,display,color,palette,esp32,arduino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicholaswilde/catppuccin-rgb565.git"
+  },
+  "authors": {
+    "name": "Nicholas Wilde",
+    "url": "https://github.com/nicholaswilde"
+  },
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/nicholaswilde/catppuccin-rgb565",
+  "frameworks": "*",
+  "platforms": "*",
+  "headers": "CatppuccinRGB565.h",
+  "build": {
+    "srcDir": "src"
+  }
+}
