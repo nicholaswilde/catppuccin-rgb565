@@ -107,12 +107,99 @@ jobs:
           path: ${{ steps.vars.outputs.zip_name }}
 
   # ------------------------------------------------------------------
-  # 3. Create draft GitHub release and attach the zip
+  # 3. Smoke test: verify downstream project builds with git tag & zip
+  # ------------------------------------------------------------------
+  smoke-test:
+    name: Downstream Smoke Test
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO
+        run: pip install --upgrade platformio
+
+      - name: Download zip artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: 'catppuccin-rgb565-*'
+          path: dist
+
+      - name: Test Consumer Build (Git Tag lib_deps)
+        run: |
+          REF="${{ github.ref_name }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            REF="${{ github.event.inputs.tag }}"
+          fi
+          mkdir -p /tmp/smoke-test-git && cd /tmp/smoke-test-git
+          pio project init --board esp32dev
+          cat << EOF > platformio.ini
+          [env:esp32dev]
+          platform = espressif32
+          board = esp32dev
+          framework = arduino
+          lib_deps =
+              https://github.com/nicholaswilde/catppuccin-rgb565.git#${REF}
+          EOF
+          mkdir -p src
+          cat << 'EOF' > src/main.cpp
+          #include <Arduino.h>
+          #include <CatppuccinRGB565.h>
+
+          void setup() {
+            uint16_t bg = Catppuccin::Mocha::base;
+            uint16_t fg = Catppuccin::Mocha::text;
+            const Catppuccin::Palette& p = Catppuccin::getPalette(Catppuccin::Flavor::Latte);
+            (void)bg; (void)fg; (void)p;
+          }
+
+          void loop() {}
+          EOF
+          pio run
+
+      - name: Test Consumer Build (Packaged Zip lib_deps)
+        run: |
+          mkdir -p /tmp/smoke-test-zip && cd /tmp/smoke-test-zip
+          ZIP_FILE="$(ls $GITHUB_WORKSPACE/dist/catppuccin-rgb565-*/catppuccin-rgb565-*.zip $GITHUB_WORKSPACE/dist/catppuccin-rgb565-*.zip 2>/dev/null | head -n 1)"
+          echo "Testing with zip archive: $ZIP_FILE"
+          pio project init --board esp32dev
+          cat << EOF > platformio.ini
+          [env:esp32dev]
+          platform = espressif32
+          board = esp32dev
+          framework = arduino
+          lib_deps =
+              file://${ZIP_FILE}
+          EOF
+          mkdir -p src
+          cat << 'EOF' > src/main.cpp
+          #include <Arduino.h>
+          #include <CatppuccinRGB565.h>
+
+          void setup() {
+            uint16_t bg = Catppuccin::Latte::base;
+            uint16_t fg = Catppuccin::Latte::text;
+            const Catppuccin::Palette& p = Catppuccin::getPalette(Catppuccin::Flavor::Mocha);
+            (void)bg; (void)fg; (void)p;
+          }
+
+          void loop() {}
+          EOF
+          pio run
+
+  # ------------------------------------------------------------------
+  # 4. Create draft GitHub release and attach the zip
   # ------------------------------------------------------------------
   release:
     name: Draft Release
     runs-on: ubuntu-latest
-    needs: package
+    needs: [package, smoke-test]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
