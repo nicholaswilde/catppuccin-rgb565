@@ -1,0 +1,56 @@
+# CatppuccinRGB565
+
+> Catppuccin color palette (all 4 flavors: Mocha, Macchiato, Frappé, Latte; all 26 colors) pre-converted to RGB565 for Arduino, ESP32, TFT, and OLED display libraries (TFT_eSPI, Adafruit_GFX, LovyanGFX).
+
+CatppuccinRGB565 is a lightweight, zero-overhead C++ color palette library for embedded displays. All 26 official Catppuccin colors are provided as compile-time `constexpr uint16_t` constants and dynamic `Palette` structs in big-endian RGB565 format (5 bits red, 6 bits green, 5 bits blue).
+
+## Quick Start
+
+### Installation (PlatformIO)
+Add to your `platformio.ini`:
+```ini
+lib_deps =
+    https://github.com/nicholaswilde/catppuccin-rgb565.git
+```
+
+### Basic Usage (Compile-time Constants)
+```cpp
+#include <CatppuccinRGB565.h>
+
+// Use compile-time constants from Catppuccin::<Flavor>::<color>
+tft.fillScreen(Catppuccin::Mocha::base);
+tft.setTextColor(Catppuccin::Mocha::text, Catppuccin::Mocha::base);
+tft.fillRect(10, 10, 50, 30, Catppuccin::Mocha::mauve);
+```
+
+### Runtime Flavor Selection
+```cpp
+#include <CatppuccinRGB565.h>
+
+void applyTheme(Catppuccin::Flavor flavor) {
+    const Catppuccin::Palette& palette = Catppuccin::getPalette(flavor);
+    tft.fillScreen(palette.base);
+    tft.setTextColor(palette.text, palette.base);
+}
+```
+
+## Key Files & Resources
+
+- [CatppuccinRGB565.h](src/CatppuccinRGB565.h): Primary header defining all 4 namespaces (`Mocha`, `Macchiato`, `Frappe`, `Latte`), `Flavor` enum, `Palette` struct, and `getPalette()`.
+- [CatppuccinRGB565.cpp](src/CatppuccinRGB565.cpp): Implementation of runtime palette lookups.
+- [BasicUsage Example](examples/BasicUsage/BasicUsage.ino): Minimal TFT_eSPI setup with compile-time palette constants.
+- [RuntimeFlavor Example](examples/RuntimeFlavor/RuntimeFlavor.ino): Dynamic theme switching with `Catppuccin::getPalette(flavor)`.
+- [CydColorPalette Example](examples/CydColorPalette/CydColorPalette.ino): Complete ESP32 Cheap Yellow Display (CYD) color swatch application.
+- [Unit Tests](tests/test_catppuccin/test_catppuccin.cpp): Host-native Unity unit test suite (`pio test -e native`).
+
+## Flavors & Colors Available
+
+Each flavor namespace (`Catppuccin::Mocha`, `Catppuccin::Macchiato`, `Catppuccin::Frappe`, `Catppuccin::Latte`) contains 26 `constexpr uint16_t` colors:
+- **Accents**: `rosewater`, `flamingo`, `pink`, `mauve`, `red`, `maroon`, `peach`, `yellow`, `green`, `teal`, `sky`, `sapphire`, `blue`, `lavender`
+- **Text & Foreground**: `text`, `subtext1`, `subtext0`
+- **UI Surfaces**: `overlay2`, `overlay1`, `overlay0`, `surface2`, `surface1`, `surface0`
+- **Backgrounds**: `base`, `mantle`, `crust`
+
+## Macros & Utilities
+
+- `CATP_SWAP(color)` / `CATP_SWAP16(color)`: Byte-swap 16-bit RGB565 values for display drivers requiring reversed endianness (e.g. certain SPI/DMA modes).

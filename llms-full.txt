@@ -1,0 +1,269 @@
+# CatppuccinRGB565 — Full Documentation & API Reference
+
+> Catppuccin color palette (all 4 flavors: Mocha, Macchiato, Frappé, Latte; all 26 colors) pre-converted to RGB565 for Arduino, ESP32, TFT, and OLED display libraries.
+
+- **Repository**: https://github.com/nicholaswilde/catppuccin-rgb565
+- **License**: Apache-2.0
+- **Language**: C++ (C++11 or higher)
+- **Format**: RGB565 (16-bit unsigned integer: 5-bit Red, 6-bit Green, 5-bit Blue)
+- **Byte Order**: Big-endian host format
+
+---
+
+## 1. Installation
+
+### PlatformIO
+In your project's `platformio.ini`:
+```ini
+[env:esp32]
+platform = espressif32
+board = esp32dev
+framework = arduino
+lib_deps =
+    https://github.com/nicholaswilde/catppuccin-rgb565.git
+```
+
+### Arduino IDE
+Download the repository zip from GitHub and install it via **Sketch > Include Library > Add .ZIP Library...**, or clone into your `Arduino/libraries/` folder:
+```bash
+git clone https://github.com/nicholaswilde/catppuccin-rgb565.git CatppuccinRGB565
+```
+
+---
+
+## 2. Color Values Reference Table (RGB565 & Hex)
+
+### 2.1 Mocha (Dark Theme, `#1E1E2E` Base)
+| Color Name | RGB565 (Hex) | Hex 24-bit | Description |
+|:---|:---|:---|:---|
+| `rosewater` | `0xF71B` | `#F5E0DC` | Warm highlight / rose |
+| `flamingo` | `0xF679` | `#F2CDCD` | Soft coral |
+| `pink` | `0xF61C` | `#F5C2E7` | Light pink accent |
+| `mauve` | `0xCD3E` | `#CBA6F7` | Violet / purple accent |
+| `red` | `0xF455` | `#F38BA8` | Error / danger |
+| `maroon` | `0xED15` | `#EBA0AC` | Soft brick red |
+| `peach` | `0xFD90` | `#FAB387` | Orange accent |
+| `yellow` | `0xFF15` | `#F9E2AF` | Warning / yellow accent |
+| `green` | `0xA714` | `#A6E3A1` | Success / green accent |
+| `teal` | `0x971A` | `#94E2D5` | Turquoise / teal accent |
+| `sky` | `0x8EFD` | `#89DCEB` | Light sky blue |
+| `sapphire` | `0x763D` | `#74C7EC` | Vibrant sapphire blue |
+| `blue` | `0x8DBF` | `#89B4FA` | Primary blue accent |
+| `lavender` | `0xB5FF` | `#B4BEFE` | Periwinkle / lavender |
+| `text` | `0xCEBE` | `#CDD6F4` | Primary body text |
+| `subtext1` | `0xBE1B` | `#BAC2DE` | High-contrast subtext |
+| `subtext0` | `0xA579` | `#A6ADC8` | Low-contrast subtext |
+| `overlay2` | `0x94D6` | `#9399B2` | Borders, highlights |
+| `overlay1` | `0x7C33` | `#7F849C` | Subtle dividers |
+| `overlay0` | `0x6B90` | `#6C7086` | Inactive elements |
+| `surface2` | `0x5ACE` | `#585B70` | Active card / surface |
+| `surface1` | `0x422B` | `#45475A` | Elevated surface |
+| `surface0` | `0x3188` | `#313244` | Panel surface |
+| `base` | `0x18E5` | `#1E1E2E` | Default background |
+| `mantle` | `0x18C4` | `#181825` | Darker recessed background |
+| `crust` | `0x1083` | `#11111B` | Deepest crust background |
+
+### 2.2 Macchiato (Medium-Dark Theme, `#24273A` Base)
+| Color Name | RGB565 (Hex) | Hex 24-bit |
+|:---|:---|:---|
+| `rosewater` | `0xF6DA` | `#F4DBD6` |
+| `flamingo` | `0xF638` | `#F0C6C6` |
+| `pink` | `0xF5FC` | `#F5BDE6` |
+| `mauve` | `0xC51E` | `#C6A0F6` |
+| `red` | `0xEC32` | `#ED8796` |
+| `maroon` | `0xECD4` | `#EE99A0` |
+| `peach` | `0xF54F` | `#F5A97F` |
+| `yellow` | `0xEEB3` | `#EED49F` |
+| `green` | `0xA6D2` | `#A6DA95` |
+| `teal` | `0x8EB9` | `#8BD5CA` |
+| `sky` | `0x96BC` | `#91D7E3` |
+| `sapphire` | `0x7E3C` | `#7DC4E4` |
+| `blue` | `0x8D7E` | `#8AADF4` |
+| `lavender` | `0xB5FF` | `#B7BDF8` |
+| `text` | `0xCE9E` | `#CAD3F5` |
+| `subtext1` | `0xBE1C` | `#B8C0E0` |
+| `subtext0` | `0xA579` | `#A5ADCB` |
+| `overlay2` | `0x94D6` | `#939AB7` |
+| `overlay1` | `0x8434` | `#8087A2` |
+| `overlay0` | `0x6B91` | `#6E738D` |
+| `surface2` | `0x5B0F` | `#5B6078` |
+| `surface1` | `0x4A6C` | `#494D64` |
+| `surface0` | `0x31C9` | `#363A4F` |
+| `base` | `0x2127` | `#24273A` |
+| `mantle` | `0x1906` | `#1E2030` |
+| `crust` | `0x18C4` | `#181926` |
+
+### 2.3 Frappé (Medium-Light Theme, `#303446` Base)
+| Color Name | RGB565 (Hex) | Hex 24-bit |
+|:---|:---|:---|
+| `rosewater` | `0xF6B9` | `#F2D5CF` |
+| `flamingo` | `0xEDF7` | `#EEBEBE` |
+| `pink` | `0xF5DC` | `#F4B8E4` |
+| `mauve` | `0xCCFC` | `#CA9EE6` |
+| `red` | `0xE410` | `#E78284` |
+| `maroon` | `0xECD3` | `#EA999C` |
+| `peach` | `0xECEE` | `#EF9F76` |
+| `yellow` | `0xE652` | `#E5C890` |
+| `green` | `0xA691` | `#A6D189` |
+| `teal` | `0x8657` | `#81C8BE` |
+| `sky` | `0x9E9B` | `#99D1DB` |
+| `sapphire` | `0x861B` | `#85C1DC` |
+| `blue` | `0x8D5D` | `#8CAAEE` |
+| `lavender` | `0xBDDE` | `#BABBF1` |
+| `text` | `0xC69E` | `#C6D0F5` |
+| `subtext1` | `0xB5FC` | `#B5BFE2` |
+| `subtext0` | `0xA579` | `#A5ADCE` |
+| `overlay2` | `0x94F7` | `#949CBB` |
+| `overlay1` | `0x8454` | `#838BA7` |
+| `overlay0` | `0x73D2` | `#737994` |
+| `surface2` | `0x6350` | `#626880` |
+| `surface1` | `0x52AD` | `#51576D` |
+| `surface0` | `0x422B` | `#414559` |
+| `base` | `0x31A8` | `#303446` |
+| `mantle` | `0x2967` | `#292C3C` |
+| `crust` | `0x2126` | `#232634` |
+
+### 2.4 Latte (Light Theme, `#EFF1F5` Base)
+| Color Name | RGB565 (Hex) | Hex 24-bit |
+|:---|:---|:---|
+| `rosewater` | `0xDC4F` | `#DC8A78` |
+| `flamingo` | `0xDBCF` | `#DD7878` |
+| `pink` | `0xEBB9` | `#EA76CB` |
+| `mauve` | `0x89DD` | `#8839EF` |
+| `red` | `0xD067` | `#D20F39` |
+| `maroon` | `0xE22A` | `#E64553` |
+| `peach` | `0xFB21` | `#FE640B` |
+| `yellow` | `0xDC63` | `#DF8E1D` |
+| `green` | `0x4505` | `#40A02B` |
+| `teal` | `0x1493` | `#179299` |
+| `sky` | `0x053C` | `#04A5E5` |
+| `sapphire` | `0x24F6` | `#209FB5` |
+| `blue` | `0x1B3E` | `#1E66F5` |
+| `lavender` | `0x743F` | `#7287FD` |
+| `text` | `0x4A6D` | `#4C4F69` |
+| `subtext1` | `0x5AEE` | `#5C5F77` |
+| `subtext0` | `0x6B70` | `#6C6F85` |
+| `overlay2` | `0x7BF2` | `#7C7F93` |
+| `overlay1` | `0x8C74` | `#8C8FA1` |
+| `overlay0` | `0x9D16` | `#9CA0B0` |
+| `surface2` | `0xAD97` | `#ACB0BE` |
+| `surface1` | `0xCE9B` | `#CCD0DA` |
+| `surface0` | `0xE75D` | `#E6E9EF` |
+| `base` | `0xEF9E` | `#EFF1F5` |
+| `mantle` | `0xE75D` | `#E6E9EF` |
+| `crust` | `0xDF1D` | `#DCE0E8` |
+
+---
+
+## 3. C++ API Reference
+
+### 3.1 Namespaces & Enums
+```cpp
+namespace Catppuccin {
+
+enum class Flavor : uint8_t {
+    Mocha      = 0,
+    Macchiato  = 1,
+    Frappe     = 2,
+    Latte      = 3,
+};
+
+namespace Mocha     { /* 26 constexpr uint16_t colors */ }
+namespace Macchiato { /* 26 constexpr uint16_t colors */ }
+namespace Frappe    { /* 26 constexpr uint16_t colors */ }
+namespace Latte     { /* 26 constexpr uint16_t colors */ }
+
+struct Palette {
+    uint16_t rosewater, flamingo, pink, mauve, red, maroon;
+    uint16_t peach, yellow, green, teal, sky, sapphire;
+    uint16_t blue, lavender, text, subtext1, subtext0;
+    uint16_t overlay2, overlay1, overlay0;
+    uint16_t surface2, surface1, surface0;
+    uint16_t base, mantle, crust;
+};
+
+const Palette& getPalette(Flavor flavor);
+
+} // namespace Catppuccin
+```
+
+### 3.2 Byte Swapping Macros
+For SPI/DMA display drivers expecting swapped endianness:
+```cpp
+#define CATP_SWAP(c)   ((uint16_t)(((c) >> 8) | ((c) << 8)))
+#define CATP_SWAP16(c) CATP_SWAP(c)
+```
+
+---
+
+## 4. Usage Examples with Display Libraries
+
+### 4.1 TFT_eSPI (Static Palette)
+```cpp
+#include <TFT_eSPI.h>
+#include <CatppuccinRGB565.h>
+
+TFT_eSPI tft = TFT_eSPI();
+
+void setup() {
+    tft.init();
+    tft.setRotation(1);
+
+    // Dark Mocha background
+    tft.fillScreen(Catppuccin::Mocha::base);
+
+    // Text header
+    tft.setTextColor(Catppuccin::Mocha::text, Catppuccin::Mocha::base);
+    tft.drawString("Sensor Dashboard", 10, 10, 4);
+
+    // Status card
+    tft.fillRoundRect(10, 50, 140, 80, 6, Catppuccin::Mocha::surface0);
+    tft.drawRoundRect(10, 50, 140, 80, 6, Catppuccin::Mocha::mauve);
+    tft.setTextColor(Catppuccin::Mocha::green, Catppuccin::Mocha::surface0);
+    tft.drawString("Status: OK", 20, 80, 2);
+}
+
+void loop() {}
+```
+
+### 4.2 Adafruit_GFX (Dynamic Runtime Theme)
+```cpp
+#include <Adafruit_GFX.h>
+#include <Adafruit_ST7789.h>
+#include <CatppuccinRGB565.h>
+
+extern Adafruit_ST7789 display;
+
+void renderUI(Catppuccin::Flavor theme) {
+    const Catppuccin::Palette& p = Catppuccin::getPalette(theme);
+
+    display.fillScreen(p.base);
+    display.setTextColor(p.text);
+    display.setTextSize(2);
+    display.setCursor(20, 20);
+    display.print("Current Theme");
+
+    display.fillRect(20, 60, 40, 40, p.blue);
+    display.fillRect(70, 60, 40, 40, p.peach);
+    display.fillRect(120, 60, 40, 40, p.green);
+}
+```
+
+### 4.3 LovyanGFX
+```cpp
+#include <LovyanGFX.hpp>
+#include <CatppuccinRGB565.h>
+
+LGFX lcd;
+
+void setup() {
+    lcd.init();
+    lcd.setRotation(1);
+
+    lcd.fillScreen(Catppuccin::Latte::base);
+    lcd.setTextColor(Catppuccin::Latte::text);
+    lcd.drawCenterString("Latte Theme", lcd.width() / 2, 20, &fonts::Font4);
+}
+
+void loop() {}
+```
