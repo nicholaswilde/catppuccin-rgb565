@@ -1,6 +1,6 @@
 ---
 name: release
-description: Automates the versioning, tagging, and deployment process for the project.
+description: Automates the versioning, tagging, and deployment process for the project. Trigger: /release, "release", "make a release", "cut a release".
 ---
 # /release
 

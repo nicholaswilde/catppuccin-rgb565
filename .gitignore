@@ -1,3 +1,17 @@
 .env
 .codegraph/
 .pio/
+.serena/
+.rtk/*
+!.rtk/filters.toml
+
+# Python artifacts
+.venv/
+__pycache__/
+*.pyc
+
+# Agents configuration whitelist
+.agents/*
+!.agents/skills/
+!.agents/rules/
+!.agents/skills_catalog.md
